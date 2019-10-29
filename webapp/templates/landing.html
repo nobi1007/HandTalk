@@ -1,0 +1,88 @@
+<html>
+
+<head>
+    <Title>
+        HandTalk
+    </Title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <style>
+        .body {
+            position: relative;
+            width: 60%;
+            height: 70%;
+            background-image: linear-gradient(to bottom, rgba(0, 255, 255, 1), rgba(0, 0, 0, 1));
+            left: 20%;
+            top: 10%;
+            border-radius: 10px;
+        }
+
+        .main {
+            position: relative;
+            height: 55%;
+            width: 60%;
+            font-size: 3.8em;
+            padding: 10%;
+            top: 10%;
+        }
+
+        span {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        .start_button:hover {
+            cursor: pointer;
+        }
+
+        .start_button {
+            width: 40%;
+            padding: 3%;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 700;
+            position: relative;
+            left: 30%;
+            border-radius: 10px;
+            background-color: #99ffff;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 7px #999;
+        }
+
+        .start_button:hover {
+            background-color: #7ecccc
+        }
+
+        .start_button:active {
+            background-color: #7ecccc;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+    </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".start_button").click(function () {
+                window.location.href = "/main";
+                // window.location.href = "http://127.0.0.1:2000/main";
+                return false;
+            });
+        });
+
+    </script>
+</head>
+
+<body>
+    <div class="body">
+        <div class="main"><span>HandTalk</span></div>
+        <div class="lower">
+            <button class="start_button">Let's Start</button>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -29,7 +29,7 @@ unique_val = np.array(train_labels)
 np.unique(unique_val)
 
 plt.figure(figsize = (18,8))
-sns.countplot(x =train_labels)
+sns.countplot(x = train_labels)
 
 from google.colab import drive
 drive.mount('/content/drive')

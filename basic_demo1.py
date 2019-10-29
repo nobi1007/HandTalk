@@ -9,9 +9,10 @@ from keras.models import Sequential
 from keras.layers import Dense, Conv2D, MaxPooling2D, Flatten, Dropout
 import time
 
-mappings = {0:"A",1:"B",2:"C",3:"D",4:"E",5:"F",6:"G",7:"G",8:"H",9:"I",10:"K",11:"L",12:"M",13:"N",14:"O",15:"P",16:"Q",17:"R",18:"S",19:"T",20:"U",21:"V",22:"W",23:"X",24:"Y",}
+mappings = {0:"A",1:"B",2:"C",3:"D",4:"E",5:"F",6:"G",7:"H",8:"I",9:'J',10:"K",11:"L",12:"M",13:"N",14:"O",15:"P",16:"Q",17:"R",18:"S",19:"T",20:"U",21:"V",22:"W",23:"X",24:"Y",25:'Z',26:' DEL ',27:'',28:'  '}
+
 cap = cv2.VideoCapture(0)
-myModel = keras.models.load_model("first_handTalk.h5")
+myModel = keras.models.load_model("handTalk_ver2.h5")
 # print(myModel.summary())
 
 while(True):
@@ -25,8 +26,8 @@ while(True):
     y2 = image[150:401,250:501]
     y = cv2.resize(y2,(28,28))
     y2 = cv2.resize(y,(250,250))
-    y2 = cv2.cvtColor(y2,cv2.COLOR_BGR2GRAY)
-    y = cv2.cvtColor(y,cv2.COLOR_BGR2GRAY)
+    # y2 = cv2.cvtColor(y2,cv2.COLOR_BGR2GRAY)
+    # y = cv2.cvtColor(y,cv2.COLOR_BGR2GRAY)
 
     img1 = "Original"
     cv2.namedWindow(img1)        
@@ -37,7 +38,7 @@ while(True):
     cv2.moveWindow(img2, 1040,130)  
     
     
-    newImg = np.reshape(y,[1,28,28,1])
+    newImg = np.reshape(y,[3,64,64,1])
     prediction = myModel.predict(newImg)
     index = 0
     prediction
@@ -62,4 +63,3 @@ while(True):
 cv2.waitKey(0)
 cap.release()
 cv2.destroyAllWindows()
-

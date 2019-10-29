@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Display Webcam Stream</title>
+
+    <style>
+        #container {
+            margin: 0px auto;
+            width: 500px;
+            height: 375px;
+            border: 10px #333 solid;
+        }
+
+        #videoElement {
+            width: 500px;
+            height: 375px;
+            background-color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <video id="player" height="240" width="320" controls autoplay></video>
+    <button id="capture" onclick="setInterval(setImage,100)">Capture</button>
+    <canvas id="canvas" width=120 height=80>hello 1</canvas>
+    <canvas id="canvas2" width=100 height=70>hello 2</canvas>
+
+    <script>
+        const player = document.getElementById('player');
+        const canvasOne = document.getElementById('canvas');
+        const contextOne = canvas.getContext('2d');
+        const canvasTwo = document.getElementById('canvas2');
+        const contextTwo = canvas2.getContext('2d');
+
+        const constraints = {
+            video: true,
+        };
+
+        function setImage() {
+
+            contextOne.drawImage(player, 0, 0, canvasOne.width, canvasOne.height);
+            contextTwo.drawImage(player, 0, 0, canvasTwo.width, canvasTwo.height);
+
+            imageDataTwo = contextTwo.getImageData(0, 0, canvasTwo.width, canvasTwo.height);
+            console.log(imageDataTwo.data.length);
+            var i;
+            for (i = 0; i < imageDataTwo.data.length; i += 4) {
+                imageDataTwo.data[i] = 255 - imageDataTwo.data[i];
+                imageDataTwo.data[i + 1] = 255 - imageDataTwo.data[i + 1];
+                imageDataTwo.data[i + 2] = 255 - imageDataTwo.data[i + 2];
+                imageDataTwo.data[i + 3] = 255;
+                // console.log(i);
+            }
+            contextTwo.putImageData(imageDataTwo, 0, 0);
+            // console.log(pixels);
+            // console.log(typeof imageData.data);
+            // console.log(pixels[0]);
+            // Draw the video frame to the canvas.
+            // console.log(typeof imageData.data);
+        }
+
+        // // Attach the video stream to the video element and autoplay.
+        // navigator.mediaDevices.getUserMedia(constraints)
+        //     .then((stream) => {
+        //         player.srcObject = stream;
+        //     });
+
+        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        var element = document.getElementById('text');
+
+        if (isMobile) {
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: "environment" } } })
+                    .then(function (stream) {
+                        player.srcObject = stream;
+                    })
+                    .catch(function (error) {
+                        console.log("Something went wrong!");
+                    });
+            }
+        } else {
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+                    .then(function (stream) {
+                        player.srcObject = stream;
+                    })
+                    .catch(function (error) {
+                        console.log("Something went wrong!");
+                    });
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

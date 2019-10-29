@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <Title>
+        HandTalk
+    </Title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <style>
+        .body,
+        .side_panel {
+            position: absolute;
+            width: 60%;
+            height: 70%;
+            background-image: linear-gradient(to bottom, rgba(0, 255, 255, 1), rgba(0, 0, 0, 1));
+            left: 20%;
+            top: 10%;
+            border-radius: 10px;
+        }
+
+        .my_canvas {
+            position: absolute;
+            z-index: -2;
+            background-color: crimson;
+        }
+
+        /* side-panel css starts here */
+
+        .side_panel {
+            /* opacity: 0.8; */
+            background-image: none;
+            background-color: black;
+            opacity: 0.8;
+            width: 50%;
+            z-index: 2;
+            visibility: hidden;
+            padding: 4%;
+        }
+
+        .side_main {
+            position: relative;
+            /* background-color: yellow; */
+            height: 60%;
+            width: 90%;
+            /* left:20px; */
+            padding: 10%;
+            /* margin: 7%; */
+        }
+
+        .aim_sub_menu,
+        .help_sub_menu,
+        .about_sub_menu {
+            position: relative;
+            margin: 10%;
+            margin-top: 15%;
+            font-size: 1.5em;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* the main body css starts here*/
+
+        .header_frame {
+            position: relative;
+            height: 8%;
+            background-color:none;
+            /* opacity: 0.3; */
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 5px;
+            padding-left: 20px;
+        }
+
+        .header_side_left {
+            position: relative;
+            top: 5px;
+        }
+
+        .header_side_right {
+            position: relative;
+            top: 5px;
+            left: 76%;
+        }
+
+        .camera_frame {
+            position: relative;
+            width: 100%;
+            height: 52%;
+            background-color: black;
+            font-size: 3.8em;
+            padding: 3%;
+            /* padding-left: 7%; */
+            /* top: 2%;             */
+        }
+
+        #videoElement {
+            /* position: relative; */
+            width: 100%;
+            height: 100%;
+            background-color: #666;
+        }
+
+        .button_frame {
+            position: relative;
+            padding: 1%;
+            height: 10%;
+            /* background-color: greenyellow; */
+        }
+
+        .start_button,
+        .stop_button {
+            margin: 3%;
+            width: 25%;
+            padding: 3%;
+            text-align: center;
+            font-size: 1.2em;
+            font-weight: 700;
+            position: relative;
+            left: 20%;
+            border-radius: 10px;
+            background-color: #99ffff;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 7px #999;
+        }
+
+        .start_button:hover {
+            background-color: #7ecccc;
+            cursor: pointer;
+        }
+
+        .start_button:active {
+            background-color: #7ecccc;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+        .stop_button:hover {
+            background-color: #7ecccc;
+            cursor: pointer;
+        }
+
+        .stop_button:active {
+            background-color: #7ecccc;
+            box-shadow: 0 5px #666;
+            transform: translateY(4px);
+        }
+
+
+        .message_frame {
+            position: relative;
+            padding: 3%;
+            height: 30%;
+            /* background-color: darkgoldenrod; */
+            opacity: 0.4;
+            z-index: 1;
+        }
+
+        .message_body {
+            position: relative;
+            /* z-index: 1; */
+            padding: 2%;
+            height: 88%;
+            font-size: 1.2em;
+            background-color: aquamarine;
+            overflow:auto;
+        }
+    </style>
+
+</head>
+
+<body>
+    <canvas id="my_canvas" height="64px" width="64px"></canvas>
+    <div class="body">
+        <div class="header_frame">
+            <img src="/static/menu-symbol-of-three-parallel-lines.png" class="header_side_left" height="25px"
+                width="25px">
+            <img src="/static/menu-symbol-of-three-parallel-dots.png" class="header_side_right" height="25px"
+                width="25px">
+        </div>
+        <div class="camera_frame">
+            <video id="videoElement" controls autoplay></video>
+        </div>
+        <div class="button_frame">
+            <button class="start_button">Start</button>
+            <button class="stop_button">Stop</button>
+        </div>
+        <div class="message_frame">
+            <p class="message_body"></p>
+        </div>
+
+    </div>
+
+    <div class="side_panel">
+        <div class="side_main">
+            <div class="aim_sub_menu">
+                Aim
+            </div>
+            <div class="help_sub_menu">
+                Help
+            </div>
+            <div class="about_sub_menu">
+                About
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".header_side_left").click(function () {
+                $(".side_panel").css({ "visibility": "visible" });
+            });
+
+            $(".camera_frame").click(function () {
+                $(".side_panel").css({ "visibility": "hidden" });
+            });
+
+            $(".message_frame").click(function () {
+                $(".side_panel").css({ "visibility": "hidden" });
+            });
+
+            $(".aim_sub_menu").click(function () {
+                window.location.href = "/main/aim";
+                return false;
+            });
+
+            $(".help_sub_menu").click(function () {
+                window.location.href = "/main/help";
+                return false;
+            });
+
+            $(".about_sub_menu").click(function () {
+                window.location.href = "/main/abouts";
+                return false;
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+
+        const player = document.getElementById('videoElement');
+        var isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+        const canvasOne = document.getElementById("my_canvas");
+        const contextOne = canvasOne.getContext('2d');
+
+        console.log(navigator.mediaDevices);
+
+        if (isMobile) {
+            if (navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: "environment" } } })
+                    .then(function (stream) {
+                        player.srcObject = stream;
+                    })
+                    .catch(function (error) {
+                        console.log("Something went wrong!");
+                    });
+            }
+        } else {
+            if (navigator.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+                    .then(function (stream) {
+                        player.srcObject = stream;
+                    })
+                    .catch(function (error) {
+                        console.log("Something went wrong!");
+                    });
+            }
+        }
+
+        var socket = io.connect();
+        socket.on('connect', function () {
+
+            socket.emit('my event', {
+                data: 'User Connected'
+            });
+
+            var x;
+
+            $(".start_button").click(function () {
+                $(".header_frame").css({"background-color":"green"});
+                x = setInterval(invoke, 2000);
+                // alert("jhgjh");
+            });
+
+            $(".stop_button").click(function () {
+                clearInterval(x);
+                $(".header_frame").css({"background-color":""});
+            });
+
+            function invoke() {
+                contextOne.drawImage(player, 0, 0, canvasOne.width, canvasOne.height);
+                let imageData = contextOne.getImageData(0, 0, 64, 64);
+                socket.emit('my event', {
+                    sid: socket.io.engine.id,
+                    image_data: imageData.data,
+                    response: "",
+                });
+            }
+        });
+
+        socket.on('my response', function (msg) {
+            console.log(msg)
+            if (msg.sid == socket.io.engine.id) {
+                $('p.message_body').append(msg.response + " ");
+            }
+        });
+
+    </script>
+    <!-- <div>Icons made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a
+            href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div> -->
+</body>
+
+</html>
